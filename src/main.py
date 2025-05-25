@@ -2,6 +2,7 @@ from pprint import pprint
 # Imports from project files
 from textnode import TextNode, TextType
 from markdown_converter import *
+from block_converter import *
 
 
 
@@ -34,7 +35,19 @@ def main():
     #print(type([node]))
     text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
     pprint(text_to_textnodes("None"))
+    markdown = """# This is a heading
+
+This is a paragraph of text. It has some **bold** and _italic_ words inside of it.
 
 
+- This is the first list item in a list block     
+- This is a list item
+- This is another list item      
+"""
+    test = markdown_to_blocks(markdown)
+    pprint(markdown)
+    print(type(test), len(test))
+    print(test)
 
 main()
+
