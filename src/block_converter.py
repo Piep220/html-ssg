@@ -72,50 +72,88 @@ def block_to_block_type(block:str):
         return BlockType.ORDERED
     return BlockType.PARA
 
-def text_to_children(text:str):
+def block_to_html_node(text:str):
     match block_to_block_type(text):
         #https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Lists
         case BlockType.PARA:
             return block_convert_para(text)
         case BlockType.HEAD:
-            return HTMLNode("h1", text)
+            return block_convert_head(text)
         case BlockType.QUOTE:
             return block_convert_quote(text)
         case BlockType.CODE:
-            leaf = text_node_to_html_node(TextNode(text[3:-3], TextType.CODE))
-            return LeafNode("pre", leaf)
+            return block_convert_code(text)
         case BlockType.UNORDERED:
-            return HTMLNode("ul", text)
+            return block_convert_unordered(text)
         case BlockType.ORDERED:
-            return HTMLNode("ol", text)
+            return block_convert_ordered(text)
+        case _:
+            raise ValueError("invalid block type")
+
+def text_to_children(text:str):
+    text_nodes = text_to_textnodes(text)
+    children = []
+    for text_node in text_nodes:
+        html_node = text_node_to_html_node(text_node)
+        children.append(html_node)
+    return children
 
 def block_convert_para(text:str):
-    text_nodes = text_to_textnodes(text)
-    leaf_nodes = []
-    for node in text_nodes:
-        leaf_nodes.append(text_node_to_html_node(node))
-    return ParentNode("p", leaf_nodes)
+    lines = text.split("\n")
+    para = " ".join(lines)
+    children = text_to_children(para)
+    return ParentNode("p", children)
 
 def block_convert_head(text:str):
-    pass
+    level = 0
+    for char in text:
+        if char == "#":
+            level += 1
+        else:
+            break
+    if level + 1 >= len(text):
+        raise ValueError(f"invalid heading level: {level}")
+    children = text_to_children(text[level + 1 :])
+    return ParentNode(f"h{level}", children)
+
+def block_convert_code(text:str):
+    if not text.startswith("```") or not text.endswith("```"):
+        raise ValueError("invalid code block")
+    trimmed_text = text[3:-3]
+    if trimmed_text.startswith("\n"):
+        trimmed_text = trimmed_text[1:]
+    leaf = text_node_to_html_node(TextNode(trimmed_text, TextType.NORMAL))
+    child = ParentNode("code", [leaf])
+    return ParentNode("pre", [child])
 
 def block_convert_quote(text:str):
-    text_nodes = text_to_textnodes(text)
-    leaf_nodes = []
-    for node in text_nodes:
-        leaf_nodes.append(text_node_to_html_node(node))
-    return ParentNode("blockquote", text_nodes)
+    lines = text.split("\n")
+    new_lines = []
+    for line in lines:
+        if not line.startswith(">"):
+            raise ValueError("invalid quote block")
+        new_lines.append(line.lstrip(">").strip())
+    content = " ".join(new_lines)
+    return ParentNode("blockquote", text_to_children(content))
 
 def block_convert_unordered(text:str):
-    pass
+    html_items = []
+    for line in text.split("\n"):
+        children = text_to_children(line[2:])
+        html_items.append(ParentNode("li", children))
+    return ParentNode("ul", html_items)
 
 def block_convert_ordered(text:str):
-    pass
+    html_items = []
+    for line in text.split("\n"):
+        children = text_to_children(line[3:])
+        html_items.append(ParentNode("li", children))
+    return ParentNode("ol", html_items)
 
 def markdown_to_html_node(markdown:str):
     blocks = markdown_to_blocks(markdown)
     nodes = []
     for block in blocks:
-        nodes.append(text_to_children(block))
-
-    return ParentNode("div", nodes)
+        html_node = block_to_html_node(block)
+        nodes.append(html_node)
+    return ParentNode("div", nodes, None)

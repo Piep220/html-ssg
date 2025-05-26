@@ -54,9 +54,9 @@ This is text that _should_ remain
 the **same** even with inline stuff
 ```
 """
-    print(md)
-    print("<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>")
-    pprint(markdown_to_html_node(md))
+    #print(md)
+    #print("<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>")
+    #pprint(markdown_to_html_node(md))
     md = """
 This is **bolded** paragraph
 text in a p
@@ -65,11 +65,11 @@ tag here
 This is another paragraph with _italic_ text and `code` here
 
 """
-    print("###########################")
-    print(md)
-    print("<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>")
-    test = markdown_to_html_node(md)
-    pprint(test.to_html())
+    #print("###########################")
+    #print(md)
+    #print("<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>")
+    #test = markdown_to_html_node(md).to_html()
+    #print(test)
     #for node in test.children:
     #    print(type(node))
 
