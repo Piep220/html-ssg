@@ -29,23 +29,23 @@ class TestHTMLNode(unittest.TestCase):
         self.assertNotEqual(node, node2)
     def test_repr(self):
         node = HTMLNode("tag", "value", ["child1"], {"key": "value"})
-        expected_repr = "HTMLNode(tag, value, ['child1'], {'key': 'value'})"
+        expected_repr = "HTMLNode(tag, value, children: ['child1'], {'key': 'value'})"
         self.assertEqual(repr(node), expected_repr)
     def test_repr_none(self):
         node = HTMLNode("tag", "value", None, None)
-        expected_repr = "HTMLNode(tag, value, None, None)"
+        expected_repr = "HTMLNode(tag, value, children: None, None)"
         self.assertEqual(repr(node), expected_repr)
     def test_repr_different_tag(self):
         node = HTMLNode("tag", "value", ["child1"], {"key": "value"})
-        expected_repr = "HTMLNode(tag, value, ['child1'], {'key': 'value'})"
+        expected_repr = "HTMLNode(tag, value, children: ['child1'], {'key': 'value'})"
         self.assertEqual(repr(node), expected_repr)
     def test_repr_different_value(self):
         node = HTMLNode("tag", "value", ["child1"], {"key": "value"})
-        expected_repr = "HTMLNode(tag, value, ['child1'], {'key': 'value'})"
+        expected_repr = "HTMLNode(tag, value, children: ['child1'], {'key': 'value'})"
         self.assertEqual(repr(node), expected_repr)
     def test_repr_different_children(self):
         node = HTMLNode("tag", "value", ["child1"], {"key": "value"})
-        expected_repr = "HTMLNode(tag, value, ['child1'], {'key': 'value'})"
+        expected_repr = "HTMLNode(tag, value, children: ['child1'], {'key': 'value'})"
         self.assertEqual(repr(node), expected_repr)
  
 

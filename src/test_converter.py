@@ -1,7 +1,7 @@
 import unittest
 from htmlnode import HTMLNode
 from textnode import TextNode, TextType
-from converters import text_node_to_html_node
+from block_converter import text_node_to_html_node
 
 
 class TestConverters(unittest.TestCase):
@@ -49,8 +49,8 @@ class TestConverters(unittest.TestCase):
         node = TextNode("This is an image", TextType.IMAGE, "https://example.com/image.png")
         html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, "img")
-        self.assertEqual(html_node.value, None)
-        self.assertEqual(html_node.props, 'src="https://example.com/image.png" alt="This is an image"')
+        self.assertEqual(html_node.value, "")
+        self.assertEqual(html_node.props, {'src': 'https://example.com/image.png', 'alt': 'This is an image'})
         self.assertEqual(html_node.children, [])
 
     def test_no_text(self):
