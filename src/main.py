@@ -6,7 +6,7 @@ from block_converter import *
 
 
 
-def main():
+def old_main():
     print("hello world")
     #test_TextNode = TextNode("test text", "link", "http://www.google.com")
     #print(test_TextNode)
@@ -72,6 +72,9 @@ This is another paragraph with _italic_ text and `code` here
     #print(test)
     #for node in test.children:
     #    print(type(node))
+
+def main():
+    print("hello world")
 
 main()
 
